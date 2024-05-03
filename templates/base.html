@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <title>{% block title %}SkillVista{% endblock %}</title>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <h1>SkillVista</h1>
+    </header>
+
+    <div class="navbar">
+      <a href="#" class="navbar-link">Find Jobs</a>
+      <a href="{{ url_for('login') }}" class="navbar-link">Hire Freelancer</a>
+      <a href="#" class="navbar-link">Get Ideas</a>
+      <a href="{{ url_for('about') }}" class="navbar-link">About</a>
+      <a href="#" class="navbar-action">Post Project</a>
+      <a href="{{ url_for('login') }}" class="navbar-action">Login</a>
+    </div>
+    {% block body%}
+
+    {% endblock %}
+    <div class="content">
+      <h2 class="content-heading">
+        World's Largest Freelance Marketplace SKillVista!
+      </h2>
+      <p class="content-text">
+        Save up to 90% & get quotes for free. Pay only when you're 100% happy.
+      </p>
+      <a href="#" class="content-button">Hire a Freelancer</a>
+    </div>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>About Us</h3>
+                <p><b><h3>"SkillVista"</h3></b>-- your gateway to a panoramic view of skills and opportunities..</p>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Jobes</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <p>Email: info@skillvista.com</p>
+                <p>Phone: +1(91) 9019237538</p>
+            </div>
+        </div>
+    </footer>
+    
+  </body>
+</html>
