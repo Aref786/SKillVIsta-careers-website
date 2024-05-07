@@ -1,0 +1,87 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FFFFFF;
+}
+
+.custom-content {
+    background-color: rgba(255, 255, 255, 0.9); /* Adjust opacity if needed */
+    padding: 20px; /* Adjust padding to make it smaller */
+    margin-top: 10px; /* Adjust margin as needed */
+    text-align: center;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px; /* Adjust font size to make it smaller */
+}
+
+.custom-heading {
+    margin-bottom: 10px;
+}
+  
+.custom-text {
+    margin: 0;
+    margin-top: 10px;
+    color: #12151b; /* Corrected from text-emphasis-color */
+}
+  
+.custom-button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    display: inline-block;
+}
+  
+.custom-button:hover {
+    background-color: #444;
+}
+
+.job-postings {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.image-container {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.card-content h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.card-content p {
+    margin: 0;
+    color: #555;
+    line-height: 1.5;
+}
+
+@media screen and (max-width: 600px) {
+    .job-postings {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}

@@ -12,9 +12,18 @@ connectionString = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={SERVER};DA
 # Create a connection
 conn = pyodbc.connect(connectionString)
 
+# Function to fetch data from the SQL Server table
+def get_job_postings():
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM job_postings') 
+    job_postings = cursor.fetchall()
+    conn.close()
+    return job_postings
+
 @app.route('/')
-def baseS():
-    return render_template('base.html')
+def index():
+    job_postings = get_job_postings()
+    return render_template('index.html', job_postings=job_postings)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
