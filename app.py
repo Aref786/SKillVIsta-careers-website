@@ -63,6 +63,10 @@ def profile():
     # User profile logic
     return render_template('profile.html')
 
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    # Handle contact form submission
+    return render_template('contact.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

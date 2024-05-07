@@ -3,18 +3,19 @@
 {% block title %}SkillVista - Login{% endblock %}
 
 {% block body %}
-<div class="login-container">
+<div class="login-container-custom">
     <h1>Login</h1>
-    <form class="login-form" action="{{ url_for('login') }}" method="POST">
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" class="form-control" required>
+    <form class="login-form-custom" action="{{ url_for('login') }}" method="POST">
+        <div class="form-group-custom">
+            <label class="custom-label" for="username">Username:</label>
+            <input type="text" id="username" name="username" class="custom-input" required>
         </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" class="form-control" required>
+        <div class="form-group-custom">
+            <label class="custom-label" for="password">Password:</label>
+            <input type="password" id="password" name="password" class="custom-input" required>
         </div>
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="custom-btn">Login</button>
     </form>
 </div>
+
 {% endblock %}

@@ -97,32 +97,53 @@ body {
   background-color: #444;
 }
 
-/* style.css */
-.login-container {
-  width: 300px;
+.login-container-custom {
+  max-width: 400px;
   margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
 }
 
-.login-form {
+.login-form-custom {
   margin-top: 20px;
 }
 
-.form-group {
-  margin-bottom: 15px;
+.form-group-custom {
+  margin-bottom: 20px;
 }
 
-label {
+label.custom-label {
   display: block;
   margin-bottom: 5px;
+  font-weight: bold;
 }
 
-.input-control {
+input.custom-input {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
+  border-radius: 3px;
 }
+
+button.custom-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button.custom-btn:hover {
+  background-color: #0056b3;
+}
+
+
 
 .btn {
   padding: 10px 20px;
@@ -204,4 +225,168 @@ label {
   font-size: 16px;
   line-height: 1.5;
   color: #333;
+}
+
+/* Signup container */
+.signup-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Signup title */
+.signup-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form group */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Form label */
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+/* Form input */
+.form-input {
+  width: calc(100% - 10px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+/* Submit button */
+.btn-submit {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-submit:hover {
+  background: #0056b3;
+}
+
+/* about.css */
+
+/* Body */
+.about-body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+/* Container */
+.about-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings */
+.about-heading {
+  color: #333;
+}
+
+/* Paragraphs */
+.about-paragraph {
+  margin-bottom: 20px;
+}
+
+/* Lists */
+.about-list {
+  margin-bottom: 20px;
+  padding-left: 20px;
+}
+
+/* Images */
+.about-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* css for Contact page */
+
+.contact-container-custom {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.contact-container-custom {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.contact-form-custom {
+  margin-top: 20px;
+}
+
+.form-group-custom {
+  margin-bottom: 20px;
+}
+
+label.custom-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input.custom-input,
+textarea.custom-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+textarea.custom-input {
+  resize: vertical; /* Allow vertical resizing of textarea */
+}
+
+button.custom-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button.custom-btn:hover {
+  background-color: #0056b3;
 }
