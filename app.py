@@ -6,19 +6,39 @@ app = Flask(__name__)
 # Database Connection
 SERVER='AREF\SQLEXPRESS'
 DATABASE="SKillVista"
-
 connectionString = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={SERVER};DATABASE={DATABASE};Trusted_Connection=yes;'
-
 # Create a connection
 conn = pyodbc.connect(connectionString)
 
+
+#################Functions#############################
+
+def SQL_GETDATA_EXTENSIONS():
+    conn = pyodbc.connect(connectionString)
+    return conn
+
 # Function to fetch data from the SQL Server table
 def get_job_postings():
+    conn = SQL_GETDATA_EXTENSIONS()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM job_postings') 
     job_postings = cursor.fetchall()
     conn.close()
     return job_postings
+
+# Function to insert contact form data into the database
+def insert_contact_data(name, email, message):
+    conn = pyodbc.connect(connectionString)
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO contact_form (name, email, message) VALUES (?, ?, ?)', (name, email, message))
+    conn.commit()
+    conn.close()
+
+
+
+########################################End-Points(routes)##################################
+
+
 
 @app.route('/')
 def index():
@@ -74,8 +94,16 @@ def profile():
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    # Handle contact form submission
-    return render_template('contact.html')
+    if request.method == 'POST':
+        # Retrieve form data
+        name = request.form['name']
+        email = request.form['email']
+        message = request.form['message']
+        
+        insert_contact_data(name, email, message)
+        return redirect(url_for(''))
+    else:
+        return render_template('contact.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
