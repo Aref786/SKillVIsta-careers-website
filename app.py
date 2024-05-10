@@ -16,8 +16,21 @@ connectionString = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={SERVER};DA
 # Create a connection
 conn = pyodbc.connect(connectionString)
 
+
+#########################################################################################################################
+
+
+# Function to authenticate user
+def authenticate_user(username, password):
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM users WHERE username = ? AND password = ?", (username, hashed_password))
+    user = cursor.fetchone()
+    cursor.close()
+    return user
+
 # Function to fetch data from the SQL Server table
-def get_job_postings():
+def get_postings():
     conn = pyodbc.connect(connectionString)
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM job_postings') 
@@ -43,21 +56,56 @@ def insert_contact_data(name, email, message):
     conn.close()
 
 # Function to insert job posting data into the database
-def insert_job_creation(title, description, budget):
+def insert_job_creation(title, description, budget, deadline, instructions, contact, salary_benefits):
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO job_posting (title, description, budget) VALUES (?, ?, ?)', (title, description, budget))
+    try:
+        cursor.execute('''
+            INSERT INTO JobPostings (Title, Description, Budget, Deadline, Instructions, ContactInfo, SalaryBenefits)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (title, description, budget, deadline, instructions, contact, salary_benefits))
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        raise e
+    finally:
+        cursor.close()
+
+# Function to insert  view job posting data into the database
+def viwe_job_postinges():
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM JobPostings")
+    view_job_postings = cursor.fetchall()
     conn.commit()
-    cursor.close()
+    conn.close()
+    return view_job_postings
 
 
-#############################################################################
+def view_job_postings():
+    try:
+        conn = pyodbc.connect(connectionString)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM JobPostings")
+        job_postings = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return job_postings
+    except Exception as e:
+        print("An error occurred while fetching job postings:", e)
+        return []
+
+#######################################################################################################################
 
 
 @app.route('/')
 def index():
-    job_postings = get_job_postings()
-    return render_template('index.html', job_postings=job_postings,username=username)
-
+     
+     if 'username' in session:
+        job_postings = get_postings()
+        return redirect(url_for('view_postings'))
+     else:
+         job_postings = get_postings()
+         return render_template('index.html', job_postings=job_postings,username=username)
+    
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -80,7 +128,11 @@ def login():
 def logout():
     global username
     username = None
-    return render_template('index.html')
+    session.pop('username', None)
+    session.clear()  # Clear the session data
+    flash('You have been logged out', 'info')
+    return redirect(url_for('login'))
+
     
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -103,40 +155,40 @@ def signup():
         return redirect(url_for('login'))
     else:
         return render_template('signup.html')
-
+        
 
 @app.route('/create_job_posting', methods=['GET', 'POST'])
 def create_job_posting():
-    if 'username'  in session:
+    if 'username' not in session:
         flash('Please log in to create a job posting.', 'error')
         return redirect(url_for('login'))
-    
+
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
         budget = request.form['budget']
+        deadline = request.form['deadline']
+        instructions = request.form['instructions']
+        contact = request.form['contact']
+        salary_benefits = request.form['salary_benefits']
 
         # Insert job posting data into the database
-        insert_job_creation(title, description, budget)
-        
-        flash('Job posting created successfully!', 'success')
-        return redirect(url_for('profile'))
+        try:
+            insert_job_creation(title, description, budget, deadline, instructions, contact, salary_benefits)
+            flash('Job posting created successfully!', 'success')
+            return redirect(url_for('profile'))
+        except Exception as e:
+            flash(f'An error occurred: {str(e)}', 'error')
+            return redirect(url_for('create_job_posting'))
+
     else:
         return render_template('create_job_posting.html')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+@app.route('/view_postings')
+def view_postings():
+    job_postings = view_job_postings()
+    return render_template('view_postings.html', job_postings=job_postings)
 
 
 

@@ -390,3 +390,74 @@ button.custom-btn {
 button.custom-btn:hover {
   background-color: #0056b3;
 }
+
+
+
+/* style.css */
+
+/* Body and Container */
+.job-application-body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
+
+.job-application-container {
+  max-width: 800px;
+  margin: 50px auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading */
+.job-application-heading {
+  font-size: 32px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Form */
+.job-application-form-group {
+  margin-bottom: 20px;
+}
+
+.job-application-label {
+  font-weight: bold;
+}
+
+.job-application-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.job-application-textarea {
+  height: 100px;
+}
+
+/* Submit Button */
+.job-application-submit-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.job-application-submit-button:hover {
+  background-color: #0056b3;
+}
+
+/* Error Message */
+.job-application-error-message {
+  color: #dc3545;
+  margin-top: 5px;
+  font-size: 14px;
+}
