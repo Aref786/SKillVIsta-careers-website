@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FFFFFF;
+}
+
+/* Styles for Job Postings */
+.job-container {
+    margin-top: 20px;
+}
+
+.job-card {
+    margin-bottom: 20px;
+}
+
+.job-header {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.job-title {
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+.job-body {
+    padding: 20px;
+}
+
+.job-description {
+    margin-bottom: 10px;
+}
+
+.job-budget {
+    margin-bottom: 10px;
+}
+
+.job-deadline {
+    margin-bottom: 10px;
+}
+
+.job-instructions {
+    margin-bottom: 10px;
+}
+
+.job-contact {
+    margin-bottom: 10px;
+}
+
+.job-salary-benefits {
+    margin-bottom: 10px;
+}

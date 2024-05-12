@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 
 {% block title %}SkillVista - Contact{% endblock %}
-
+{% block nav %}
+<div class="navbar">
+    <a href="{{ url_for('index') }}" class="navbar-link">Home</a>
+    <a href="{{ url_for('view_postings') }}" class="navbar-link">Find Jobs</a>
+    <a href="#" class="navbar-link">Hire Freelancer</a>
+    <a href="{{ url_for('about') }}" class="navbar-link">About</a>
+    <a href="{{ url_for('contact') }}" class="navbar-link">Contact</a>
+</div>
+{% endblock %}
 {% block body %}
 <div class="contact-container-custom">
     <h1>Contact Us</h1>

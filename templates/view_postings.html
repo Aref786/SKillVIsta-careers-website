@@ -1,35 +1,36 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 
 {% block title %}SkillVista - Job Postings{% endblock %}
-{% block nav %}
-{% endblock %}
+
 {% block body %}
-<div class="container">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/view_postinges.css') }}" />
+<div class="container job-container">
     <h1>Job Postings</h1>
     <div class="row">
         {% for job in job_postings %}
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">{{ job.title }}</h4>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm job-card {% set unique_class = 'card-' ~ job.id %}">
+                <div class="card-header job-header {{ unique_class ~ '-header' }}">
+                    <h4 class="my-0 font-weight-normal job-title">{{ job.title }}</h4>
                 </div>
-                <div class="card-body">
-                    <h5>Description:</h5>
+                <div class="card-body job-body {{ unique_class ~ '-body' }}">
+                    <h5 class="job-description">Description:</h5>
                     <p class="card-text">{{ job.description }}</p>
-                    <h5>Budget:</h5>
+                    <h5 class="job-budget">Budget:</h5>
                     <p class="card-text">{{ job.budget }}</p>
-                    <h5>Deadline:</h5>
+                    <h5 class="job-deadline">Deadline:</h5>
                     <p class="card-text">{{ job.deadline }}</p>
-                    <h5>Instructions:</h5>
+                    <h5 class="job-instructions">Instructions:</h5>
                     <p class="card-text">{{ job.instructions }}</p>
-                    <h5>Contact Information:</h5>
+                    <h5 class="job-contact">Contact Information:</h5>
                     <p class="card-text">{{ job.contact }}</p>
-                    <h5>Salary and Benefits:</h5>
+                    <h5 class="job-salary-benefits">Salary and Benefits:</h5>
                     <p class="card-text">{{ job.salary_benefits }}</p>
-                   
                 </div>
             </div>
         </div>
+        {% if loop.index % 3 == 0 %}
+    </div><div class="row">{% endif %}
         {% endfor %}
     </div>
 </div>
