@@ -5,7 +5,7 @@
 {% block nav %}
 <div class="navbar">
     <a href="{{ url_for('index') }}" class="navbar-link">Home</a>
-    <a href="{{ url_for('view_postings') }}" class="navbar-link">Find Jobs</a>
+    <a href="{{ url_for('job_details') }}" class="navbar-link">Find Jobs</a>
     <a href="#" class="navbar-link">Hire Freelancer</a>
     <a href="{{ url_for('about') }}" class="navbar-link">About</a>
     <a href="{{ url_for('contact') }}" class="navbar-link">Contact</a>
@@ -38,20 +38,20 @@
     <div class="card-container">
         <div class="card">
             <div class="image-container">
-                <img src="{{ url_for('static', filename='images/asset-01.jpg') }}" alt="Job Image">
+                <img src="{{ job.image_url }}" alt="Job Image">
             </div>
             <div class="card-content">
-                <h3>{{ job.position_title }}</h3>
-                <p><strong>Company:</strong> {{ job.company_information }}</p>
-                <p><strong>Description:</strong> {{ job.job_description }}</p>
-                <p><strong>Application Deadline:</strong> {{ job.application_deadline }}</p>
-                <p><strong>Application Instructions:</strong> {{ job.application_instructions }}</p>
-                <p><strong>Contact Information:</strong> {{ job.contact_information }}</p>
-                <p><strong>Salary and Benefits:</strong> {{ job.salary_and_benefits }}</p>
+                <h3>{{ job.title }}</h3>
+                <p><strong>Company:</strong> {{ job.company }}</p>
+                <p><strong>Description:</strong> {{ job.description }}</p>
+                <p><strong>Application Deadline:</strong> {{ job.deadline }}</p>
+                <p><strong>Application Instructions:</strong> {{ job.how_to_apply }}</p>
+                <p><strong>Contact Information:</strong> {{ job.contact }}</p>
+                <p><strong>Salary and Benefits:</strong> {{ job.benefits }}</p>
             </div>
         </div>
     </div>
-    {% if loop.index % 4 == 0 %}
+    {% if loop.index % 50 == 0 %}
     <div class="clearfix"></div>
     {% endif %}
     {% endfor %}

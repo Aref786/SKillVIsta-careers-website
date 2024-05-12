@@ -29,8 +29,137 @@ def authenticate_user(username, password):
     cursor.close()
     return user
 
-# Function to fetch data from the SQL Server table
-def get_postings():
+# Function to fetch static data 
+def Home_get_postings():
+    Home_job_postings = [
+        {
+            'id': 1,
+            'title': 'Software Engineer',
+            'company': 'ABC Tech Solutions',
+            'description': 'We are seeking a software engineer to join our team...',
+            'deadline': '2024-05-31',
+            'how_to_apply': 'Submit your resume to careers@abctech.com...',
+            'contact': 'For inquiries, contact HR at hr@abctech.com.',
+            'benefits': 'Competitive salary and benefits.',
+            'image_url': url_for('static', filename='images/asset-01.jpg')
+        },
+        {
+            'id': 2,
+            'title': 'Data Analyst',
+            'company': 'Data Insights Inc.',
+            'description': 'Data Insights Inc. seeks a detail-oriented data analyst...',
+            'deadline': '2024-06-15',
+            'how_to_apply': 'Send your resume to careers@datainsights.com...',
+            'contact': 'For inquiries, email info@datainsights.com.',
+            'benefits': 'Competitive salary with bonuses.',
+            'image_url': url_for('static', filename='images/asset-02.png')
+       },
+        {
+            'id': 3,
+            'title': 'UX/UI Designer',
+            'company': 'Design Innovations Co.',
+            'description': 'Design Innovations Co. needs a creative UX/UI designer...',
+            'deadline': '2024-06-30',
+            'how_to_apply': 'Submit your resume to jobs@designinnovations.com...',
+            'contact': 'For more info, contact careers@designinnovations.com.',
+            'benefits': 'Competitive salary and remote work options.',
+            'image_url': url_for('static', filename='images/asset-07.jpeg')
+        },
+        {
+            'id': 4,
+            'title': 'Marketing Specialist',
+            'company': 'Brand Solutions Agency',
+            'description': 'Brand Solutions Agency seeks a marketing specialist...',
+            'deadline': '2024-07-15',
+            'how_to_apply': 'Send your resume to careers@brandsolutions.com...',
+            'contact': 'For inquiries, email info@brandsolutions.com.',
+            'benefits': 'Competitive salary and performance incentives.',
+            'image_url': url_for('static', filename='images/asset-08.png')
+        },
+        {
+            'id': 5,
+            'title': 'Web Developer',
+            'company': 'Tech Solutions Ltd.',
+            'description': 'Tech Solutions Ltd. is looking for a skilled web developer...',
+            'deadline': '2024-07-30',
+            'how_to_apply': 'To apply, send your CV to careers@techsolutions.com...',
+            'contact': 'For inquiries, contact HR at hr@techsolutions.com.',
+            'benefits': 'Competitive salary and opportunities for career growth.',
+           'image_url': url_for('static', filename='images/asset-01.jpg')
+        },
+        {
+            'id': 6,
+            'title': 'Financial Analyst',
+            'company': 'Finance Experts Inc.',
+            'description': 'Finance Experts Inc. is hiring a financial analyst...',
+            'deadline': '2024-08-15',
+            'how_to_apply': 'Submit your application to jobs@financeexperts.com...',
+            'contact': 'For more information, email info@financeexperts.com.',
+            'benefits': 'Competitive salary and comprehensive benefits package.',
+            'image_url': url_for('static', filename='images/asset-02.png')
+        },
+        {
+            'id': 7,
+            'title': 'Graphic Designer',
+            'company': 'Creative Designs Agency',
+            'description': 'Creative Designs Agency is seeking a talented graphic designer...',
+            'deadline': '2024-08-30',
+            'how_to_apply': 'Send your portfolio to careers@creativedesigns.com...',
+            'contact': 'For inquiries, contact HR at hr@creativedesigns.com.',
+            'benefits': 'Competitive salary and a creative work environment.',
+            'image_url': url_for('static', filename='images/asset-01.jpg')
+        },
+        {
+            'id': 8,
+            'title': 'Customer Service Representative',
+            'company': 'Service Excellence Ltd.',
+            'description': 'Service Excellence Ltd. is hiring a customer service representative...',
+            'deadline': '2024-09-15',
+            'how_to_apply': 'To apply, send your resume to careers@serviceexcellence.com...',
+            'contact': 'For inquiries, email info@serviceexcellence.com.',
+            'benefits': 'Competitive salary and training opportunities.',
+            'image_url': url_for('static', filename='images/asset-08.png')
+        },
+        {
+            'id': 9,
+            'title': 'Service Representative',
+            'company': 'Service Excellence Ltd.',
+            'description': 'Service Excellence Ltd. is hiring a customer service representative...',
+            'deadline': '2024-09-15',
+            'how_to_apply': 'To apply, send your resume to careers@serviceexcellence.com...',
+            'contact': 'For inquiries, email info@serviceexcellence.com.',
+            'benefits': 'Competitive salary and training opportunities.',
+            'image_url': url_for('static', filename='images/asset-01.jpg')
+        },
+         {
+            'id': 10,
+            'title': 'Content Writer',
+            'company': 'WordSmith Inc.',
+            'description': 'WordSmith Inc. is looking for a creative content writer...',
+            'deadline': '2024-09-30',
+            'how_to_apply': 'Submit writing samples to careers@wordsmith.com...',
+            'contact': 'For inquiries, email info@wordsmith.com.',
+            'benefits': 'Competitive salary and flexible work schedule.',
+            'image_url': url_for('static', filename='images/asset-08.png')
+        },
+        {
+            'id': 11,
+            'title': 'Human Resources Manager',
+            'company': 'HR Solutions Group',
+            'description': 'HR Solutions Group is seeking an experienced HR manager...',
+            'deadline': '2024-10-15',
+            'how_to_apply': 'Send your CV to careers@hrsolutionsgroup.com...',
+            'contact': 'For more information, contact HR at hr@hrsolutionsgroup.com.',
+            'benefits': 'Competitive salary and benefits package.',
+            'image_url': url_for('static', filename='images/asset-02.png')
+        }
+    ]
+    
+    return Home_job_postings
+
+
+def get_jobes():
+    # Assuming connectionString is defined somewhere with the appropriate database connection details
     conn = pyodbc.connect(connectionString)
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM job_postings') 
@@ -100,10 +229,10 @@ def view_job_postings():
 def index():
      
      if 'username' in session:
-        job_postings = get_postings()
+        job_postings = Home_get_postings()
         return redirect(url_for('view_postings'))
      else:
-         job_postings = get_postings()
+         job_postings = Home_get_postings()
          return render_template('index.html', job_postings=job_postings,username=username)
     
 @app.route('/login', methods=['GET', 'POST'])
@@ -159,7 +288,7 @@ def signup():
 
 @app.route('/create_job_posting', methods=['GET', 'POST'])
 def create_job_posting():
-    if 'username' not in session:
+    if 'username'  in session:
         flash('Please log in to create a job posting.', 'error')
         return redirect(url_for('login'))
 
@@ -191,12 +320,11 @@ def view_postings():
     return render_template('view_postings.html', job_postings=job_postings)
 
 
-
-
 @app.route('/job_details')
 def job_details():
-    # Job details logic
-    return render_template('job_details.html')
+    job_postings = get_jobes()
+    return render_template('job_details.html', job_postings=job_postings)
+
 
 @app.route('/about')
 def about():

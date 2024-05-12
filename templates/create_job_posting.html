@@ -8,7 +8,7 @@
 {% block nav %}
 <div class="navbar">
     <a href="{{ url_for('index') }}" class="navbar-link">Home</a>
-    <a href="{{ url_for('view_postings') }}" class="navbar-link">Find Jobs</a>
+    <a href="{{ url_for('job_details') }}" class="navbar-link">Find Jobs</a>
     <a href="#" class="navbar-link">Hire Freelancer</a>
     <a href="{{ url_for('about') }}" class="navbar-link">About</a>
     <a href="{{ url_for('contact') }}" class="navbar-link">Contact</a>
@@ -18,6 +18,9 @@
         <a href="{{ url_for('logout') }}" class="navbar-action">Logout</a>
         <a href="{{ url_for('create_job_posting') }}" class="navbar-link">Create Job Posting</a>
     {% endif %}
+</div>
+{% endblock %}
+
 {% block body %}
 <div class="job-application-container">
     <h1 class="job-application-heading">Create Job Posting</h1>
