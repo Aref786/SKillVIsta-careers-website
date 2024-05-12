@@ -1,22 +1,57 @@
-{% extends "index.html" %}
-
-{% block title %}SkillVista - Job Postings{% endblock %}
+<!-- HTML -->
+{% extends "base.html" %}
+{% block title %}SkillVista-View Postings{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
 {% block nav %}
 <div class="navbar">
     <a href="{{ url_for('index') }}" class="navbar-link">Home</a>
-    <a href="#" class="navbar-link">Find Jobs</a>
+    <a href="{{ url_for('view_postings') }}" class="navbar-link">Find Jobs</a>
     <a href="#" class="navbar-link">Hire Freelancer</a>
     <a href="{{ url_for('about') }}" class="navbar-link">About</a>
     <a href="{{ url_for('contact') }}" class="navbar-link">Contact</a>
-    {% if username is none %}
-        <a href="{{ url_for('login') }}" class="navbar-action">Login</a>
-    {% else %}
-        <a href="{{ url_for('logout') }}" class="navbar-action">Logout</a>
-        <a href="{{ url_for('create_job_posting') }}" class="navbar-link">Create Job Posting</a>
-    {% endif %}
+    <a href="{{ url_for('logout') }}" class="navbar-action">Logout</a>
+    <a href="{{ url_for('create_job_posting') }}" class="navbar-link">Create Job Posting</a>
 </div>
 {% endblock %}
 
 {% block body %}
-
+    <div class="sv-container">
+        <h2 class="sv-heading">User Job Postings</h2>
+        <table class="sv-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Resume Path</th>
+                    <th>Job ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Budget</th>
+                    <th>Deadline</th>
+                    <th>Instructions</th>
+                    <th>Contact Info</th>
+                    <th>Salary Benefits</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in job_postings %}
+                <tr>
+                    <td>{{ row.username }}</td>
+                    <td>{{ row.email }}</td>
+                    <td>{{ row.resume_path }}</td>
+                    <td>{{ row.JobID }}</td>
+                    <td>{{ row.Title }}</td>
+                    <td>{{ row.Description }}</td>
+                    <td>{{ row.Budget }}</td>
+                    <td>{{ row.Deadline }}</td>
+                    <td>{{ row.Instructions }}</td>
+                    <td>{{ row.ContactInfo }}</td>
+                    <td>{{ row.SalaryBenefits }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

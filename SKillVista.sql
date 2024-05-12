@@ -34,6 +34,7 @@ END;
 
 */
 
+-- Create UserJobPostinges table with foreign key reference to usersname table in user table
 CREATE TABLE UserJobPostings(
     JobID INT IDENTITY(1,1),
     Title NVARCHAR(100) NOT NULL,
@@ -45,5 +46,17 @@ CREATE TABLE UserJobPostings(
     SalaryBenefits NVARCHAR(MAX) NOT NULL,
     UserName NVARCHAR(50) NOT NULL
 );
+
+
+/*CREATE PROCEDURE RetrieveUserJobPostings
+AS
+BEGIN
+    SELECT u.username, u.email, u.resume_path,
+           j.JobID, j.Title, j.Description, j.Budget, j.Deadline, j.Instructions, j.ContactInfo, j.SalaryBenefits
+    FROM users u
+    INNER JOIN UserJobPostings j ON u.username = j.UserName;
+END;
+
+*/
 
 

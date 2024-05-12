@@ -461,3 +461,49 @@ button.custom-btn:hover {
   margin-top: 5px;
   font-size: 14px;
 }
+
+
+/*-----------------------------------------------------------------*/
+
+/* CSS user job postings */
+.sv-container {
+  margin: 20px auto;
+  max-width: 100%;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sv-heading {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Table styling */
+.sv-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.sv-table th,
+.sv-table td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: left;
+}
+
+.sv-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.sv-table tbody tr:nth-child(even) {
+  background-color: #fff;
+}
+
+.sv-table tbody tr:hover {
+  background-color: #f0f0f0;
+}

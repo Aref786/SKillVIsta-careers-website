@@ -157,14 +157,6 @@ def Home_get_postings():
     ]
     return Home_job_postings
 
-def get_jobes():
-    # Assuming connectionString is defined somewhere with the appropriate database connection details
-    conn = pyodbc.connect(connectionString)
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM job_postings') 
-    job_postings = cursor.fetchall()
-    conn.close()
-    return job_postings
 
 # Function to insert user data into the database
 def insert_user(username, email, password):
@@ -201,28 +193,21 @@ def insert_job_creation(title, description, budget, deadline, instructions, cont
         conn.close()
 
 
-# Function to insert  view job posting data into the database
-def viwe_job_postinges():
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM JobPostings")
-    view_job_postings = cursor.fetchall()
-    conn.commit()
-    conn.close()
-    return view_job_postings
-
-
-def view_job_postings():
+# Function to execute the stored procedure
+def execute_stored_procedure(procedure_name):
+    """
+    Execute a stored procedure and return the result.
+    """
     try:
-        conn = pyodbc.connect(connectionString)
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM JobPostings")
-        job_postings = cursor.fetchall()
+        cursor.execute(f"EXEC {procedure_name}")
+        data = cursor.fetchall()
         cursor.close()
-        conn.close()
-        return job_postings
-    except Exception as e:
-        print("An error occurred while fetching job postings:", e)
-        return []
+        return data, None
+    except pyodbc.Error as e:
+        # Log the error for debugging purposes
+        app.logger.error(f"Error executing stored procedure: {e}")
+        return None, str(e)
 
 #######################################################################################################################
 
@@ -330,16 +315,30 @@ def create_job_posting():
         return render_template('create_job_posting.html')
 
 
-#@app.route('/view_postings')
-#def view_postings():
-#   job_postings = view_job_postings()
-#   return render_template('view_postings.html', job_postings=job_postings)
+@app.route('/view_postings')
+def view_postings():
+    username = session.get('username')
+    if not username:
+        return render_template('login.html')
+    else:
+    # Call the stored procedure to retrieve job postings
+        job_postings, error = execute_stored_procedure("RetrieveUserJobPostings")
+    if error:
+        return render_template('error.html', message=error)
+    else:
+        return render_template('view_postings.html', job_postings=job_postings)
+
+@app.route('/error')
+def error():
+    """
+    Render the error.html template with a default error message.
+    """
+    return render_template('error.html', message="An unknown error occurred.")
 
 
 @app.route('/job_details')
 def job_details():
-    job_postings = get_jobes()
-    return render_template('job_details.html', job_postings=job_postings)
+    return render_template('job_details.html')
 
 
 @app.route('/about')
