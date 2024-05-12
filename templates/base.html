@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,20 +15,21 @@
 {% block nav %}
 <div class="navbar">
     <a href="{{ url_for('index') }}" class="navbar-link">Home</a>
-    <a href="{{ url_for('job_details') }}" class="navbar-link">Find Jobs</a>
+    <a href="#" class="navbar-link">Find Jobs</a>
     <a href="#" class="navbar-link">Hire Freelancer</a>
     <a href="{{ url_for('about') }}" class="navbar-link">About</a>
     <a href="{{ url_for('contact') }}" class="navbar-link">Contact</a>
 
-    {% if username is none %}
+    {% if username is not defined %}
         <a href="{{ url_for('login') }}" class="navbar-action">Login</a>
     {% else %}
-        <a href="{{ url_for('logout') }}" class="navbar-action">Login</a>
+        <a href="{{ url_for('logout') }}" class="navbar-action">Logout</a>
     {% endif %}
 </div>
 {% endblock %}
+{% block body %} 
 
-{% block body %} {% endblock %}
+{% endblock %}
 
 <div class="content">
     <h2 class="content-heading">World's Largest Freelance Marketplace SkillVista!</h2>
@@ -45,12 +47,10 @@
             <h3>Quick Links</h3>
             <ul>
                 <li><a href="{{ url_for('index') }}">Home</a></li>
-                <li><a href="{{ url_for('view_postings') }}">Jobs</a></li>
+                <li><a href="#">Jobs</a></li>
                 <li><a href="{{ url_for('about') }}">About</a></li>
                 <li><a href="{{ url_for('contact') }}">Contact</a></li>
-                {% if username is not none %}
-                    <li><a href="{{ url_for('create_job_posting') }}">Create Job Posting</a></li>
-                {% endif %}
+                <li><a href="#">Jobs</a></li>
             </ul>
         </div>
         <div class="footer-column">

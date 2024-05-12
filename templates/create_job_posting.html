@@ -1,4 +1,3 @@
-<!-- create_job_posting.html -->
 {% extends "base.html" %}
 
 {% block title %}Create Job Posting - SkillVista{% endblock %}
@@ -8,52 +7,50 @@
 {% block nav %}
 <div class="navbar">
     <a href="{{ url_for('index') }}" class="navbar-link">Home</a>
-    <a href="{{ url_for('job_details') }}" class="navbar-link">Find Jobs</a>
+    <a href="#" class="navbar-link">Find Jobs</a>
     <a href="#" class="navbar-link">Hire Freelancer</a>
     <a href="{{ url_for('about') }}" class="navbar-link">About</a>
     <a href="{{ url_for('contact') }}" class="navbar-link">Contact</a>
-    {% if username is none %}
-        <a href="{{ url_for('login') }}" class="navbar-action">Login</a>
-    {% else %}
-        <a href="{{ url_for('logout') }}" class="navbar-action">Logout</a>
-        <a href="{{ url_for('create_job_posting') }}" class="navbar-link">Create Job Posting</a>
-    {% endif %}
+    <a href="{{ url_for('logout') }}" class="navbar-action">Logout</a>
+    <a href="{{ url_for('create_job_posting') }}" class="navbar-link">Create Job Posting</a>
 </div>
 {% endblock %}
 
 {% block body %}
-<div class="job-application-container">
-    <h1 class="job-application-heading">Create Job Posting</h1>
-    <form method="POST" action="{{ url_for('create_job_posting') }}">
-        <div class="job-application-form-group">
-            <label for="title" class="job-application-label">Title:</label>
-            <input type="text" class="job-application-input" id="title" name="title" required>
-        </div>
-        <div class="job-application-form-group">
-            <label for="description" class="job-application-label">Description:</label>
-            <textarea class="job-application-input job-application-textarea" id="description" name="description" rows="4" required></textarea>
-        </div>
-        <div class="job-application-form-group">
-            <label for="budget" class="job-application-label">Budget:</label>
-            <input type="number" class="job-application-input" id="budget" name="budget" required>
-        </div>
-        <div class="job-application-form-group">
-            <label for="deadline" class="job-application-label">Application Deadline:</label>
-            <input type="date" class="job-application-input" id="deadline" name="deadline" required>
-        </div>
-        <div class="job-application-form-group">
-            <label for="instructions" class="job-application-label">Application Instructions:</label>
-            <textarea class="job-application-input job-application-textarea" id="instructions" name="instructions" rows="4" required></textarea>
-        </div>
-        <div class="job-application-form-group">
-            <label for="contact" class="job-application-label">Contact Information:</label>
-            <textarea class="job-application-input job-application-textarea" id="contact" name="contact" rows="4" required></textarea>
-        </div>
-        <div class="job-application-form-group">
-            <label for="salary_benefits" class="job-application-label">Salary and Benefits:</label>
-            <textarea class="job-application-input job-application-textarea" id="salary_benefits" name="salary_benefits" rows="4" required></textarea>
-        </div>
-        <button type="submit" class="job-application-submit-button">Submit</button>
-    </form>
+<div class="job-postings">
+    <div class="job-application-container">
+        <h1 class="job-application-heading">Create Job Posting</h1>
+        <form method="POST" action="{{ url_for('create_job_posting') }}">
+            <div class="job-application-form-group">
+                <label for="title" class="job-application-label">Title:</label>
+                <input type="text" class="job-application-input" id="title" name="title" required>
+            </div>
+            <div class="job-application-form-group">
+                <label for="description" class="job-application-label">Description:</label>
+                <textarea class="job-application-input job-application-textarea" id="description" name="description" rows="4" required></textarea>
+            </div>
+            <div class="job-application-form-group">
+                <label for="budget" class="job-application-label">Budget:</label>
+                <input type="number" class="job-application-input" id="budget" name="budget" required>
+            </div>
+            <div class="job-application-form-group">
+                <label for="deadline" class="job-application-label">Application Deadline:</label>
+                <input type="date" class="job-application-input" id="deadline" name="deadline" required>
+            </div>
+            <div class="job-application-form-group">
+                <label for="instructions" class="job-application-label">Application Instructions:</label>
+                <textarea class="job-application-input job-application-textarea" id="instructions" name="instructions" rows="4" required></textarea>
+            </div>
+            <div class="job-application-form-group">
+                <label for="contact" class="job-application-label">Contact Information:</label>
+                <textarea class="job-application-input job-application-textarea" id="contact" name="contact" rows="4" required></textarea>
+            </div>
+            <div class="job-application-form-group">
+                <label for="salary_benefits" class="job-application-label">Salary and Benefits:</label>
+                <textarea class="job-application-input job-application-textarea" id="salary_benefits" name="salary_benefits" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="job-application-submit-button">Submit</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

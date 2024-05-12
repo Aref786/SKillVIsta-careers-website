@@ -5,14 +5,14 @@
 {% block nav %}
 <div class="navbar">
     <a href="{{ url_for('index') }}" class="navbar-link">Home</a>
-    <a href="{{ url_for('job_details') }}" class="navbar-link">Find Jobs</a>
+    <a href="#" class="navbar-link">Find Jobs</a>
     <a href="#" class="navbar-link">Hire Freelancer</a>
     <a href="{{ url_for('about') }}" class="navbar-link">About</a>
     <a href="{{ url_for('contact') }}" class="navbar-link">Contact</a>
-    {% if username is none %}
-        <a href="{{ url_for('login') }}" class="navbar-action">Login</a>
+    {% if username is not defined %}
+    <a href="{{ url_for('login') }}" class="navbar-action">Login</a>
     {% else %}
-        <a href="{{ url_for('logout') }}" class="navbar-action">Logout</a>
+    <a href="{{ url_for('logout') }}" class="navbar-action">Logout</a>
         <a href="{{ url_for('create_job_posting') }}" class="navbar-link">Create Job Posting</a>
     {% endif %}
 </div>

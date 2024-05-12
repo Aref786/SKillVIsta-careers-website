@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash,session
 import pyodbc
 import hashlib
 import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -154,9 +155,7 @@ def Home_get_postings():
             'image_url': url_for('static', filename='images/asset-02.png')
         }
     ]
-    
     return Home_job_postings
-
 
 def get_jobes():
     # Assuming connectionString is defined somewhere with the appropriate database connection details
@@ -185,19 +184,22 @@ def insert_contact_data(name, email, message):
     conn.close()
 
 # Function to insert job posting data into the database
-def insert_job_creation(title, description, budget, deadline, instructions, contact, salary_benefits):
+def insert_job_creation(title, description, budget, deadline, instructions, contact, salary_benefits, username):
+    conn = pyodbc.connect(connectionString)
     cursor = conn.cursor()
     try:
         cursor.execute('''
-            INSERT INTO JobPostings (Title, Description, Budget, Deadline, Instructions, ContactInfo, SalaryBenefits)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        ''', (title, description, budget, deadline, instructions, contact, salary_benefits))
+            INSERT INTO UserJobPostings (Title, Description, Budget, Deadline, Instructions, ContactInfo, SalaryBenefits, UserName)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (title, description, budget, deadline, instructions, contact, salary_benefits, username))
         conn.commit()
     except Exception as e:
         conn.rollback()
         raise e
     finally:
         cursor.close()
+        conn.close()
+
 
 # Function to insert  view job posting data into the database
 def viwe_job_postinges():
@@ -224,17 +226,16 @@ def view_job_postings():
 
 #######################################################################################################################
 
-
 @app.route('/')
 def index():
-     
-     if 'username' in session:
-        job_postings = Home_get_postings()
-        return redirect(url_for('view_postings'))
-     else:
-         job_postings = Home_get_postings()
-         return render_template('index.html', job_postings=job_postings,username=username)
-    
+    username = session.get('username')
+    print(username)
+    job_postings = Home_get_postings()  # Call the function to get job postings
+    if not username:
+        return render_template('index.html', job_postings=job_postings)
+    else:
+        return render_template('index.html', job_postings=job_postings, username=username)
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -245,6 +246,7 @@ def login():
         cursor.execute("SELECT id FROM login WHERE username = ? AND password = ?", (username, password))
         row = cursor.fetchone()
         if row:
+            session['username'] = username
             flash('Login successful!', 'success')
             return redirect(url_for('index'))
         else:
@@ -261,10 +263,11 @@ def logout():
     session.clear()  # Clear the session data
     flash('You have been logged out', 'info')
     return redirect(url_for('login'))
-
     
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    resume_path = None  # Initialize resume_path variable
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
@@ -278,8 +281,19 @@ def signup():
             flash('Username already exists. Please choose a different one.', 'error')
             return redirect(url_for('signup'))
         
+        # Handle file upload (resume)
+        if 'resume' in request.files:
+            resume = request.files['resume']
+            resume_filename = secure_filename(resume.filename)
+            resume_path = os.path.join(app.config['UPLOAD_FOLDER'], resume_filename)
+            resume.save(resume_path)
+        
         # Insert new user into the database
-        insert_user(username, email, password)
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+        cursor.execute('INSERT INTO users (username, email, password, resume_path) VALUES (?, ?, ?, ?)', (username, email, hashed_password, resume_path))
+        conn.commit()
+        cursor.close()
+        
         flash('Account created successfully. Please log in.', 'success')
         return redirect(url_for('login'))
     else:
@@ -288,7 +302,9 @@ def signup():
 
 @app.route('/create_job_posting', methods=['GET', 'POST'])
 def create_job_posting():
-    if 'username'  in session:
+    # Get username from session
+    username = session.get('username')
+    if not username:
         flash('Please log in to create a job posting.', 'error')
         return redirect(url_for('login'))
 
@@ -303,21 +319,21 @@ def create_job_posting():
 
         # Insert job posting data into the database
         try:
-            insert_job_creation(title, description, budget, deadline, instructions, contact, salary_benefits)
+            insert_job_creation(title, description, budget, deadline, instructions, contact, salary_benefits, username)
             flash('Job posting created successfully!', 'success')
-            return redirect(url_for('profile'))
+            print(title,description,budget,deadline,instructions,contact,salary_benefits,username)
+            return redirect(url_for('index'))
         except Exception as e:
             flash(f'An error occurred: {str(e)}', 'error')
             return redirect(url_for('create_job_posting'))
-
     else:
         return render_template('create_job_posting.html')
 
 
-@app.route('/view_postings')
-def view_postings():
-    job_postings = view_job_postings()
-    return render_template('view_postings.html', job_postings=job_postings)
+#@app.route('/view_postings')
+#def view_postings():
+#   job_postings = view_job_postings()
+#   return render_template('view_postings.html', job_postings=job_postings)
 
 
 @app.route('/job_details')
