@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}SkillVista - Job Seekers{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Job Seekers</h1>
+    <div class="row">
+        {% for job_seeker in job_seekers %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ job_seeker.full_name }}</h2>
+                </div>
+                <div class="card-body">
+                    <p><strong>Email:</strong> {{ job_seeker.email }}</p>
+                    <p><strong>Location:</strong> {{ job_seeker.location }}</p>
+                    <p><strong>Occupation:</strong> {{ job_seeker.occupation }}</p>
+                    <p><strong>Experience:</strong> {{ job_seeker.experience_years }} years</p>
+                    <p><strong>Education:</strong> {{ job_seeker.education }}</p>
+                    <p><strong>Skills:</strong> {{ job_seeker.skills }}</p>
+                    <!-- Add more job seeker attributes here -->
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-primary">View Profile</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -470,6 +470,13 @@ def submit_application():
     # Logic for submitting the application
     return 'Application submitted successfully'
 
+@app.route('/job_seekers')
+def job_seekers():
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM JobSeekers")
+    job_seekers = cursor.fetchall()
+    cursor.close()
+    return render_template('job_seekers.html', job_seekers=job_seekers)
 
 if __name__ == "__main__":
     app.run(debug=True)
