@@ -679,3 +679,49 @@ button.custom-btn:hover {
 .apply-button:hover {
   background-color: #0056b3;
 }
+
+
+/* Custom CSS for job application form */
+
+/* Container for the form */
+.container {
+  margin: 50px auto;
+  max-width: 500px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+/* Heading style */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Input field style */
+.submitapp-input {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* Ensure padding and border are included in width */
+}
+
+/* Button style */
+.submitapp-button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff; /* Blue color */
+  color: #fff; /* White text color */
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Button hover effect */
+.submitapp-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}

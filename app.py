@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash,sess
 import pyodbc
 import hashlib
 import os
+import datetime
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -440,15 +441,34 @@ def contact():
 
 @app.route('/apply/<int:job_id>')
 def apply_job(job_id):
-    # Your logic for applying to a job
-    return render_template('apply_job.html', job_id=job_id)
+    username = session.get('username')
+    role = session.get('role')
+    if username and role == 'jobseeker':
+        return render_template('apply_job.html', job_id=job_id)
+    else:
+        # Logic for employer trying to access apply job page
+        return "You are not logged in or Register as JobSeekar to apply .sorry You cannot apply for a job."
 
 
 @app.route('/submit_application', methods=['POST'])
 def submit_application():
+    # Extract form data
+    name = request.form['name']
+    email = request.form['email']
+    job_id = request.form['job_id']  # Assuming job_id is passed in the form or available in the request
+    resume_file_path = request.form.get('resume', 'No Resume Uploaded')
+
+    # Insert data into database
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO JobApplications (JobID, ApplicantName, ApplicantEmail, ResumeFilePath, ApplicationDate)
+        VALUES (?, ?, ?, ?, ?)
+    """, (job_id, name, email, resume_file_path, datetime.datetime.now()))
+    conn.commit()
+    cursor.close()
+
     # Logic for submitting the application
     return 'Application submitted successfully'
-
 
 
 if __name__ == "__main__":
