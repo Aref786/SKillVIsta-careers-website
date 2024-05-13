@@ -14,8 +14,27 @@
             <label class="custom-label" for="password">Password:</label>
             <input type="password" id="password" name="password" class="custom-input" required>
         </div>
+        <input type="hidden" id="role" name="role"> <!-- Hidden input for role -->
+        <div class="form-group-custom">
+            <input type="checkbox" id="jobseeker" name="jobseeker" value="jobseeker">
+            <label for="jobseeker">Login as Jobseeker</label>
+        </div>
+        <div class="form-group-custom">
+            <input type="checkbox" id="employer" name="employer" value="employer">
+            <label for="employer">Login as Employer</label>
+        </div>
         <button type="submit" class="custom-btn">Login</button>
     </form>
     <p>Don't have an account? <a href="{{ url_for('signup') }}">Register here</a>.</p>
 </div>
+
+<script>
+    document.querySelector('.login-form-custom').addEventListener('submit', function() {
+        if (document.getElementById('jobseeker').checked) {
+            document.getElementById('role').value = 'jobseeker';
+        } else if (document.getElementById('employer').checked) {
+            document.getElementById('role').value = 'employer';
+        }
+    });
+</script>
 {% endblock %}

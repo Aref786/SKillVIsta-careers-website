@@ -104,6 +104,7 @@ body {
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f9f9f9;
+  margin-top: 30px;
 }
 
 .login-form-custom {
@@ -161,10 +162,11 @@ button.custom-btn:hover {
 .btn-primary:hover {
   background-color: #0056b3;
 }
+
 .footer {
-  background-color: #f8f9fa;
+  background-color: #333; /* Dark background color */
   padding: 40px 0;
-  color: #333;
+  color: #fff; /* Text color */
   font-family: Arial, sans-serif;
 }
 
@@ -173,16 +175,19 @@ button.custom-btn:hover {
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .footer-column {
   flex: 1;
   padding: 0 20px;
+  margin-bottom: 20px;
 }
 
 .footer h3 {
   font-size: 20px;
   margin-top: 0;
+  color: #fff; /* Text color */
 }
 
 .footer p {
@@ -199,7 +204,7 @@ button.custom-btn:hover {
 }
 
 .footer ul li a {
-  color: #333;
+  color: #fff;
   text-decoration: none;
 }
 
@@ -207,34 +212,54 @@ button.custom-btn:hover {
   text-decoration: underline;
 }
 
-.about-container {
-  max-width: 800px;
-  margin: 50px auto;
+.footer-context {
+  margin-top: 20px;
+  background-color: #555; /* Footer context background color */
   padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.about-container h1 {
-  font-size: 28px;
-  margin-bottom: 20px;
+.social-links {
+  margin-top: 10px;
 }
 
-.about-container p {
-  font-size: 16px;
-  line-height: 1.5;
-  color: #333;
+.social-links li {
+  display: inline-block;
+  margin-right: 10px;
 }
 
-/* Signup container */
-.signup-container {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.social-links li:last-child {
+  margin-right: 0;
+}
+
+.newsletter-form {
+  margin-top: 10px;
+  display: flex;
+}
+
+.newsletter-form input[type="email"] {
+  width: 200px;
+  padding: 5px;
+}
+
+.newsletter-form button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.newsletter-form button:hover {
+  background-color: #0056b3;
+}
+
+.app-download-links a {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.app-download-links a:last-child {
+  margin-right: 0;
 }
 
 /* Signup title */
@@ -506,4 +531,151 @@ button.custom-btn:hover {
 
 .sv-table tbody tr:hover {
   background-color: #f0f0f0;
+}
+
+/* Custom Form Styles */
+
+/* Custom class for the form container */
+.custom-signup-container {
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+/* Custom class for form labels */
+.custom-form-label {
+    font-weight: bold;
+}
+
+/* Custom class for text input fields */
+.custom-form-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    font-size: 16px; /* Adjust the font size as needed */
+}
+
+/* Custom class for radio buttons */
+.custom-form-radio {
+    margin-right: 10px;
+}
+
+/* Custom class for buttons */
+.custom-btn {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Custom class for button hover effect */
+.custom-btn:hover {
+    background-color: #0056b3;
+}
+/* Custom Form Styles */
+/* Signup container */
+.signup-container {
+  width: 50%; /* Adjusted width to make it smaller */
+  margin: 0 auto; /* Center alignment */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Signup title */
+.signup-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Form input fields */
+.form-input {
+  width: 30%; /* Adjusted width to take 100% */
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: 50%;
+}
+
+/* Form submit button */
+.btn-submit {
+  width: 100%; /* Adjusted width to take 100% */
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+/* Radio buttons */
+[type="radio"] {
+  margin-right: 5px;
+}
+
+/* Submit button */
+.btn-submit {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Button hover effect */
+.btn-submit:hover {
+  background-color: #0056b3;
+}
+
+/* Add custom CSS styles here */
+.container {
+  width: 80%;
+  margin: auto;
+}
+
+.job-posting {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.job-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.job-description {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.job-details {
+  font-size: 14px;
+}
+
+.apply-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.apply-button:hover {
+  background-color: #0056b3;
 }

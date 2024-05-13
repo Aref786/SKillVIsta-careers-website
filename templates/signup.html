@@ -1,38 +1,138 @@
 {% extends "base.html" %}
 
 {% block title %}SkillVista - Signup{% endblock %}
-
+<link rel="stylesheet" type="text/css" href="styles.css">
 {% block body %}
-<div class="signup-container">
-    <h1 class="signup-title">Sign Up</h1>
-    <form action="/signup" method="post" class="signup-form">
-        <div class="form-group">
-            <label for="username" class="form-label">Username:</label>
-            <input type="text" id="username" name="username" class="form-input" required>
+<div class="custom-signup-container">
+    <h1 class="custom-signup-title">Sign Up</h1>
+    <form action="/signup" method="post" class="custom-signup-form" id="signup-form">
+        <div class="custom-form-group">
+            <label for="username" class="custom-form-label">Username:</label>
+            <input type="text" id="username" name="username" class="custom-form-input" required>
         </div>
-        <div class="form-group">
-            <label for="email" class="form-label">Email:</label>
-            <input type="email" id="email" name="email" class="form-input" required>
+        <div class="custom-form-group">
+            <label for="email" class="custom-form-label">Email:</label>
+            <input type="email" id="email" name="email" class="custom-form-input" required>
         </div>
-        <div class="form-group">
-            <label for="password" class="form-label">Password:</label>
-            <input type="password" id="password" name="password" class="form-input" required>
+        <div class="custom-form-group">
+            <label for="password" class="custom-form-label">Password:</label>
+            <input type="password" id="password" name="password" class="custom-form-input" required>
         </div>
-        <!-- Additional fields for job application registration -->
-        <div class="form-group">
-            <label for="full_name" class="form-label">Full Name:</label>
-            <input type="text" id="full_name" name="full_name" class="form-input" required>
+        <!-- Role selection -->
+        <div class="custom-form-group">
+            <label class="custom-form-label">Register as:</label>
+            <input type="radio" id="employer" name="role" value="employer" class="custom-form-radio" required>
+            <label for="employer">Employer</label>
+            <input type="radio" id="jobseeker" name="role" value="jobseeker" class="custom-form-radio" required>
+            <label for="jobseeker">Job Seeker</label>
         </div>
-        <div class="form-group">
-            <label for="phone" class="form-label">Phone Number:</label>
-            <input type="text" id="phone" name="phone" class="form-input" required>
+        <!-- Employer-specific fields -->
+        <div id="employer-fields" style="display: none;">
+            <div class="custom-form-group">
+                <label for="company_name" class="custom-form-label">Company Name:</label>
+                <input type="text" id="company_name" name="company_name" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="industry" class="custom-form-label">Industry:</label>
+                <input type="text" id="industry" name="industry" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="company_size" class="custom-form-label">Company Size:</label>
+                <select id="company_size" name="company_size" class="custom-form-input">
+                    <option value="small">Small Business</option>
+                    <option value="medium">Medium-sized</option>
+                    <option value="large">Large Enterprise</option>
+                </select>
+            </div>
+            <div class="custom-form-group">
+                <label for="website" class="custom-form-label">Website:</label>
+                <input type="text" id="website" name="website" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="contact_person" class="custom-form-label">Contact Person's Name:</label>
+                <input type="text" id="contact_person" name="contact_person" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="contact_email" class="custom-form-label">Contact Email:</label>
+                <input type="email" id="contact_email" name="contact_email" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="contact_phone" class="custom-form-label">Contact Phone:</label>
+                <input type="text" id="contact_phone" name="contact_phone" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="company_address" class="custom-form-label">Company Address:</label>
+                <input type="text" id="company_address" name="company_address" class="custom-form-input">
+            </div>
         </div>
-         <div class="form-group">
-            <label for="resume" class="form-label">Upload Resume:</label>
-            <input type="file" id="resume" name="resume" class="form-input" accept=".pdf,.doc,.docx" required>
-            <small class="form-text">Supported formats: PDF, DOC, DOCX</small>
+        <!-- Job Seeker-specific fields -->
+        <div id="jobseeker-fields" style="display: none;">
+            <div class="custom-form-group">
+                <label for="full_name" class="custom-form-label">Full Name:</label>
+                <input type="text" id="full_name" name="full_name" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="phone" class="custom-form-label">Phone Number:</label>
+                <input type="text" id="phone" name="phone" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="location" class="custom-form-label">Location:</label>
+                <input type="text" id="location" name="location" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="occupation" class="custom-form-label">Job Title:</label>
+                <input type="text" id="occupation" name="occupation" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="industry_expertise" class="custom-form-label">Industry Expertise:</label>
+                <input type="text" id="industry_expertise" name="industry_expertise" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="experience_years" class="custom-form-label">Years of Experience:</label>
+                <input type="number" id="experience_years" name="experience_years" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="education" class="custom-form-label">Educational Background:</label>
+                <input type="text" id="education" name="education" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="skills" class="custom-form-label">Key Skills:</label>
+                <input type="text" id="skills" name="skills" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="certifications" class="custom-form-label">Certifications/Licenses:</label>
+                <input type="text" id="certifications" name="certifications" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="work_type" class="custom-form-label">Type of Work Sought:</label>
+                <input type="text" id="work_type" name="work_type" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="job_categories" class="custom-form-label">Preferred Job Categories/Fields:</label>
+                <input type="text" id="job_categories" name="job_categories" class="custom-form-input">
+            </div>
+            <div class="custom-form-group">
+                <label for="salary" class="custom-form-label">Desired Hourly Rate or Salary Range:</label>
+                <input type="text" id="salary" name="salary" class="custom-form-input">
+            </div>
         </div>
-        <button type="submit" class="btn-submit">Sign Up</button>
+        <button type="submit" class="custom-btn">Sign Up</button>
     </form>
 </div>
+
+<script>
+    // Function to show/hide employer or job seeker fields based on selected role
+    document.querySelectorAll('input[name="role"]').forEach(function(input) {
+        input.addEventListener('change', function() {
+            if (this.value === 'employer') {
+                document.getElementById('employer-fields').style.display = 'block';
+                document.getElementById('jobseeker-fields').style.display = 'none';
+            } else if (this.value === 'jobseeker') {
+                document.getElementById('employer-fields').style.display = 'none';
+                document.getElementById('jobseeker-fields').style.display = 'block';
+            }
+        });
+    });
+</script>
 {% endblock %}
+

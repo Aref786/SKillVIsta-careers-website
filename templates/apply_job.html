@@ -1,0 +1,18 @@
+<!-- apply_job.html -->
+{% extends "base.html" %}
+
+{% block title %}Apply for Job{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Apply for Job</h1>
+    <form action="{{ url_for('submit_application') }}" method="POST">
+        <!-- Your job application form fields go here -->
+        <!-- For example, name, email, resume upload, etc. -->
+        <input type="text" name="name" placeholder="Your Name">
+        <input type="email" name="email" placeholder="Your Email">
+        <input type="file" name="resume" accept=".pdf,.doc,.docx">
+        <button type="submit">Submit Application</button>
+    </form>
+</div>
+{% endblock %}

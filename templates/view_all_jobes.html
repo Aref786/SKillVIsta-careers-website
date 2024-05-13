@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}SkillVista - View All Jobs{% endblock %}
+{% block nav %}
+<div class="navbar">
+    <a href="{{ url_for('index') }}" class="navbar-link">Home</a>
+    <a href="{{ url_for('view_postings') }}" class="navbar-link">Find Jobs</a>
+    <a href="#" class="navbar-link">Hire Freelancer</a>
+    <a href="{{ url_for('about') }}" class="navbar-link">About</a>
+    <a href="{{ url_for('contact') }}" class="navbar-link">Contact</a>
+    <a href="{{ url_for('logout') }}" class="navbar-action">Logout</a>
+    <a href="{{ url_for('create_job_posting') }}" class="navbar-link">Create Job Posting</a>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>All Job Postings</h1>
+    {% for job in job_info %}
+        <div class="job-posting">
+            <div class="job-title">{{ job[1] }}</div>
+            <div class="job-description">{{ job[2] }}</div>
+            <div class="job-details">
+                <p><strong>Budget:</strong> {{ job[3] }}</p>
+                <p><strong>Deadline:</strong> {{ job[4] }}</p>
+                <p><strong>Instructions:</strong> {{ job[5] }}</p>
+                <p><strong>Contact Info:</strong> {{ job[6] }}</p>
+                <p><strong>Salary & Benefits:</strong> {{ job[7] }}</p>
+                <a href="{{ url_for('apply_job', job_id=job[0]) }}" class="apply-button">Apply</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+

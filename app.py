@@ -2,24 +2,19 @@ from flask import Flask, render_template, request, redirect, url_for, flash,sess
 import pyodbc
 import hashlib
 import os
-from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-
-username = None
-
 # Database Connection
-SERVER='AREF\SQLEXPRESS'
-DATABASE="SKillVista"
+SERVER = r'AREF\SQLEXPRESS'
+DATABASE = "SkillVista"
 connectionString = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={SERVER};DATABASE={DATABASE};Trusted_Connection=yes;'
 # Create a connection
 conn = pyodbc.connect(connectionString)
 
 
 #########################################################################################################################
-
 
 # Function to authenticate user
 def authenticate_user(username, password):
@@ -157,7 +152,6 @@ def Home_get_postings():
     ]
     return Home_job_postings
 
-
 # Function to insert user data into the database
 def insert_user(username, email, password):
     cursor = conn.cursor()
@@ -193,28 +187,12 @@ def insert_job_creation(title, description, budget, deadline, instructions, cont
         conn.close()
 
 
-# Function to execute the stored procedure
-def execute_stored_procedure(procedure_name):
-    """
-    Execute a stored procedure and return the result.
-    """
-    try:
-        cursor = conn.cursor()
-        cursor.execute(f"EXEC {procedure_name}")
-        data = cursor.fetchall()
-        cursor.close()
-        return data, None
-    except pyodbc.Error as e:
-        # Log the error for debugging purposes
-        app.logger.error(f"Error executing stored procedure: {e}")
-        return None, str(e)
-
 #######################################################################################################################
 
 @app.route('/')
 def index():
     username = session.get('username')
-    print(username)
+    #print(username)
     job_postings = Home_get_postings()  # Call the function to get job postings
     if not username:
         return render_template('index.html', job_postings=job_postings)
@@ -224,75 +202,127 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        global username
         username = request.form['username']
-        password = hashlib.sha256(request.form['password'].encode()).hexdigest()
+        password = request.form['password']
+        global role
+        role = request.form['role']
+        
+        # Establish a database connection
+        conn = pyodbc.connect(connectionString)
         cursor = conn.cursor()
-        cursor.execute("SELECT id FROM login WHERE username = ? AND password = ?", (username, password))
-        row = cursor.fetchone()
-        if row:
-            session['username'] = username
-            flash('Login successful!', 'success')
-            return redirect(url_for('index'))
-        else:
-            flash('Invalid username or password', 'error')
-            return redirect(url_for('login'))
-    else:
-        return render_template('login.html')
-    
+        
+        if role == 'employer':
+            cursor.execute("SELECT username, password FROM Employers WHERE username=?", (username,))
+            user = cursor.fetchone()
+            
+            if user:
+                # Check if the hashed password matches
+                hashed_password = hashlib.sha256(password.encode()).hexdigest()
+                if hashed_password == user.password:
+                    session['username'] = user.username
+                    session['role'] = 'employer'
+                    return redirect(url_for('create_job_posting'))
+                else:
+                    flash('Invalid username or password', 'danger')
+                    return redirect(url_for('login'))
+            else:
+                flash('Invalid username or password', 'danger')
+                return redirect(url_for('login'))
+
+        elif role == 'jobseeker':
+            cursor.execute("SELECT username, password FROM JobSeekers WHERE username=?", (username,))
+            user = cursor.fetchone()
+            
+            if user:
+                # Check if the hashed password matches
+                hashed_password = hashlib.sha256(password.encode()).hexdigest()
+                if hashed_password == user.password:
+                    session['username'] = user.username
+                    session['role'] = 'jobseeker'
+                    return redirect(url_for('index'))
+                else:
+                    flash('Invalid username or password', 'danger')
+                    return redirect(url_for('login'))
+            else:
+                flash('Invalid username or password', 'danger')
+                return redirect(url_for('login'))
+        
+        # Close the cursor and database connection
+        cursor.close()
+        conn.close()
+    return render_template('login.html')
+
+
 @app.route('/logout')
 def logout():
     global username
     username = None
+    global role
+    role=None
     session.pop('username', None)
     session.clear()  # Clear the session data
     flash('You have been logged out', 'info')
     return redirect(url_for('login'))
-    
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    resume_path = None  # Initialize resume_path variable
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
+        role = request.form['role']
         
-        # Check if username is already taken
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE username=?", (username,))
-        existing_user = cursor.fetchone()
-        if existing_user:
-            flash('Username already exists. Please choose a different one.', 'error')
-            return redirect(url_for('signup'))
-        
-        # Handle file upload (resume)
-        if 'resume' in request.files:
-            resume = request.files['resume']
-            resume_filename = secure_filename(resume.filename)
-            resume_path = os.path.join(app.config['UPLOAD_FOLDER'], resume_filename)
-            resume.save(resume_path)
-        
-        # Insert new user into the database
+        # Hash the password
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
-        cursor.execute('INSERT INTO users (username, email, password, resume_path) VALUES (?, ?, ?, ?)', (username, email, hashed_password, resume_path))
-        conn.commit()
-        cursor.close()
         
-        flash('Account created successfully. Please log in.', 'success')
+        if role == 'employer':
+            # Retrieve employer-specific fields
+            company_name = request.form['company_name']
+            industry = request.form['industry']
+            company_size = request.form['company_size']
+            website = request.form['website']
+            contact_person = request.form['contact_person']
+            contact_email = request.form['contact_email']
+            contact_phone = request.form['contact_phone']
+            company_address = request.form['company_address']
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO Employers (username, email, password, company_name, industry, company_size, website, contact_person, contact_email, contact_phone, company_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                           (username, email, hashed_password, company_name, industry, company_size, website, contact_person, contact_email, contact_phone, company_address))
+        elif role == 'jobseeker':
+            # Retrieve jobseeker-specific fields
+            full_name = request.form['full_name']
+            phone = request.form['phone']
+            location = request.form['location']
+            occupation = request.form['occupation']
+            industry_expertise = request.form['industry_expertise']
+            experience_years = request.form['experience_years']
+            education = request.form['education']
+            skills = request.form['skills']
+            certifications = request.form['certifications']
+            work_type = request.form['work_type']
+            job_categories = request.form['job_categories']
+            salary = request.form['salary']
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO JobSeekers (username, email, password, full_name, phone, location, occupation, industry_expertise, experience_years, education, skills, certifications, work_type, job_categories, salary) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                           (username, email, hashed_password, full_name, phone, location, occupation, industry_expertise, experience_years, education, skills, certifications, work_type, job_categories, salary))
+        # Printing full_name here will cause UnboundLocalError
+        # print(username, email, hashed_password, full_name, phone, location, occupation, industry_expertise, experience_years, education, skills, certifications, work_type, job_categories, salary)
+        conn.commit()  # Commit changes to the database
+        flash('You have successfully signed up!', 'success')
         return redirect(url_for('login'))
-    else:
-        return render_template('signup.html')
-        
+    return render_template('signup.html')
+
 
 @app.route('/create_job_posting', methods=['GET', 'POST'])
 def create_job_posting():
-    # Get username from session
+    # Get username and role from session
     username = session.get('username')
-    if not username:
-        flash('Please log in to create a job posting.', 'error')
+    role = session.get('role')  # Retrieve role from session
+    if not username or role != 'employer':
+        flash('Please log in as an employer to create a job posting.', 'error')
         return redirect(url_for('login'))
-
+    
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
@@ -310,23 +340,64 @@ def create_job_posting():
             return redirect(url_for('index'))
         except Exception as e:
             flash(f'An error occurred: {str(e)}', 'error')
-            return redirect(url_for('create_job_posting'))
+            return redirect(url_for('view_postings'))
     else:
-        return render_template('create_job_posting.html')
+        try:
+            cursor = conn.cursor()
+            cursor.execute("SELECT [Title], [Description], [Budget], [Deadline], [Instructions], [ContactInfo], [SalaryBenefits], [UserName] FROM [SKillVista].[dbo].[UserJobPostings]")
+            data = cursor.fetchall()
+            cursor.close()
+            return render_template('create_job_posting.html', job_postings=data)
+        except pyodbc.Error as e:
+            flash(f'An error occurred: {str(e)}', 'error')
+            return redirect(url_for('view_postings'))
 
 
 @app.route('/view_postings')
 def view_postings():
     username = session.get('username')
-    if not username:
-        return render_template('login.html')
+    role = session.get('role')
+    if not username or role != 'employer':
+        cursor = conn.cursor()
+        cursor.execute("SELECT JobID, Title, Description, Budget, Deadline, Instructions, ContactInfo, SalaryBenefits FROM [SKillVista].[dbo].[UserJobPostings]")
+        all_job_postings = cursor.fetchall()
+        cursor.close()
+        employer_info = [(job[0], job[1], job[2], job[3]) for job in all_job_postings]
+        job_info = [(job[0], job[1], job[2], job[3], job[4], job[5], job[6]) for job in all_job_postings]
+        return render_template('view_all_jobes.html', employer_info=employer_info, job_info=job_info)
     else:
-    # Call the stored procedure to retrieve job postings
-        job_postings, error = execute_stored_procedure("RetrieveUserJobPostings")
-    if error:
-        return render_template('error.html', message=error)
-    else:
-        return render_template('view_postings.html', job_postings=job_postings)
+        try:
+            cursor = conn.cursor()
+            # Use parameterized query to prevent SQL injection
+            cursor.execute("SELECT * FROM [SKillVista].[dbo].[UserJobPostings] WHERE UserName=?", (username,))
+            job_postings = cursor.fetchall()
+            cursor.close()
+            return render_template('view_postings.html', job_postings=job_postings)
+        except pyodbc.Error as e:
+            error = str(e)
+            # Log the error for debugging purposes
+            app.logger.error(f"Error executing SQL query: {error}")
+            return render_template('error.html', message=error)
+
+
+
+    try:
+        #Execute the stored procedure to retrieve all job postings
+        cursor = conn.cursor()
+        cursor.execute("EXEC RetrieveAllJobPostings")
+        all_job_postings = cursor.fetchall()
+         # Separate the data into different subsets for different tables
+        employer_info = [(job.EmployerUsername, job.EmployerEmail, job.CompanyName, job.Industry) for job in all_job_postings]
+        job_info = [(job.JobTitle, job.JobDescription, job.JobBudget, job.JobDeadline, job.JobInstructions, job.JobContactInfo, job.JobSalaryBenefits) for job in all_job_postings]
+        # Close the cursor and the database connection
+        cursor.close()
+        conn.close()
+        return render_template('job_details.html', employer_info=employer_info, job_info=job_info)
+    except pyodbc.Error as e:
+        # Log the error for debugging purposes
+        app.logger.error(f"Error executing SQL query: {str(e)}")
+        return render_template('error.html', message="An error occurred while retrieving job postings.")
+
 
 @app.route('/error')
 def error():
@@ -352,6 +423,7 @@ def profile():
     # User profile logic
     return render_template('profile.html')
 
+
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
@@ -364,6 +436,20 @@ def contact():
         return redirect(url_for(''))
     else:
         return render_template('contact.html')
+
+
+@app.route('/apply/<int:job_id>')
+def apply_job(job_id):
+    # Your logic for applying to a job
+    return render_template('apply_job.html', job_id=job_id)
+
+
+@app.route('/submit_application', methods=['POST'])
+def submit_application():
+    # Logic for submitting the application
+    return 'Application submitted successfully'
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
